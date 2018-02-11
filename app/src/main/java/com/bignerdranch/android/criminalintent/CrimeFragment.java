@@ -57,7 +57,7 @@ public class CrimeFragment extends Fragment
         mDateButton.setText(mCrime.getDate().toString());
         mDateButton.setEnabled(false);
 
-        mSolvedCheckBox = v.findViewById(R.id.crime_solved);
+        mSolvedCheckBox = v.findViewById(R.id.image_crime_solved);
         mSolvedCheckBox.setOnCheckedChangeListener(CreateCheckedChangeListener());
 
 

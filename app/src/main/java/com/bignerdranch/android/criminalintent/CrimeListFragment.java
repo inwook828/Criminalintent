@@ -1,5 +1,6 @@
 package com.bignerdranch.android.criminalintent;
 
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -7,9 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.util.List;
 
 /**
@@ -54,11 +57,8 @@ public class CrimeListFragment extends android.support.v4.app.Fragment
 
     public abstract class AbstractCrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
-        //Properties
-        Crime  m_Crime;
-        TextView m_TitleTextView;
-        TextView m_DateTextView;
-
+        //Property
+        Crime m_Crime;
         /**
          * Construct for Base ViewHolder Object
          * @param inflater
@@ -69,27 +69,12 @@ public class CrimeListFragment extends android.support.v4.app.Fragment
             super(inflater.inflate(layoutID, viewGroup,false));
 
             itemView.setOnClickListener(this);
-
-            m_TitleTextView = itemView.findViewById(R.id.crime_title);
-            m_DateTextView = itemView.findViewById(R.id.crime_date);
-        }
-
-        /**
-         * Binds all the widgets in the current fragment
-         * This will only happen one time
-         * @param crime
-         */
-        public void bind(Crime crime)
-        {
-            m_Crime = crime;
-
-            m_TitleTextView.setText(m_Crime.getTitle());
-            m_DateTextView.setText(m_Crime.getDate().toString());
         }
 
         @Override
         public void onClick(View view)
         {
+            Crime crime = new Crime();
             Toast.makeText(getActivity(), m_Crime.getTitle() + " Clicked!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -101,36 +86,74 @@ public class CrimeListFragment extends android.support.v4.app.Fragment
      */
     private class CrimeHolder extends AbstractCrimeHolder
     {
-        /**
-         * Constructor that takes in different parameters
-         * @param inflater
-         * @param parent
-         */
+        ImageView mCrimeSolvedImageView;
+        TextView mTitleTextView;
+        TextView mDateTextView;
+
+        //Constructor that will Call base class constructor
         public CrimeHolder(LayoutInflater inflater, ViewGroup parent)
         {
             super(inflater, parent, R.layout.list_item_crime);
+
+            mCrimeSolvedImageView = itemView.findViewById(R.id.image_crime_solved);
+
+            mTitleTextView = itemView.findViewById(R.id.crime_title);
+            mDateTextView = itemView.findViewById(R.id.crime_date);
+        }
+
+        /**
+         * Binds all the widgets in the current fragment
+         * This will only happen one time
+         * @param crime
+         */
+        public void bind(Crime crime)
+        {
+            m_Crime = crime;
+            mCrimeSolvedImageView.setVisibility(m_Crime.isSolved() ? View.VISIBLE : View.GONE);
+
+            mTitleTextView.setText(m_Crime.getTitle());
+            mDateTextView.setText(DateFormat.getDateInstance().format(m_Crime.getDate()));
         }
     }
 
+    /**
+     * Class that will be resposible for displaying a different
+     * Row of Crime data with a button that can enact as
+     * Calling Police
+     */
     private class CrimeLevelHolder extends AbstractCrimeHolder
     {
+        //Property
         Button mButton;
+        TextView mTitleTextView;
+        TextView mDateTextView;
+
+        //Constructor that will Call base class constructor
         public CrimeLevelHolder(LayoutInflater inflater, ViewGroup parent)
         {
             super(inflater, parent, R.layout.list_item_crime_level);
 
             mButton = itemView.findViewById(R.id.crime_level_button);
+            mTitleTextView = itemView.findViewById(R.id.crime_title);
+            mDateTextView = itemView.findViewById(R.id.crime_date);
+        }
+
+        public void bind(Crime crime)
+        {
+            m_Crime = crime;
+            SimpleDateFormat spf = new SimpleDateFormat("EEEE");
+            String strCurrentDay = spf.format(m_Crime.getDate());
+            mTitleTextView.setText(crime.getTitle());
+            mDateTextView.setText(strCurrentDay + ", " + DateFormat.getDateInstance().format(m_Crime.getDate()));
+
             mButton.setOnClickListener(new View.OnClickListener()
             {
-
                 @Override
                 public void onClick(View v)
                 {
                     Toast.makeText(getActivity(), "Call the Cops Button!", Toast.LENGTH_SHORT);
                 }
             });
-
-
         }
     }
 

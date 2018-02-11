@@ -5,6 +5,8 @@ import java.util.UUID;
 
 /**
  * Created by jSonKang on 3/19/17.
+ * This is the MODEL class for this application
+ * Hold all the necessary data needed for the Crime Object
  */
 
 public class Crime
@@ -13,6 +15,7 @@ public class Crime
     private String mTitle;
     private Date mDate;
     private boolean mSolved;
+    private int mRequiresPolice;
 
     public UUID getID()
     {
@@ -24,10 +27,7 @@ public class Crime
         return mDate;
     }
 
-    public boolean isSolved()
-    {
-        return mSolved;
-    }
+    public boolean isSolved() { return mSolved; }
 
     public void setTitle(String title)
     {
@@ -42,6 +42,16 @@ public class Crime
     public void setSolved(boolean solved)
     {
         mSolved = solved;
+    }
+
+    public void setCrimeLevel(int level)
+    {
+        mRequiresPolice = level;
+    }
+
+    public int getCrimeLevel()
+    {
+        return mRequiresPolice;
     }
 
     public String getTitle()

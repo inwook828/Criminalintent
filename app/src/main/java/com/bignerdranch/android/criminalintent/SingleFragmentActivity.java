@@ -2,26 +2,21 @@ package com.bignerdranch.android.criminalintent;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 
 /**
- * CrimeActivity - Responsible for holding CrimeFragment object
- * Holds Fragment Manager
- * Changed in Ch.8 pg 164 - AppCompatActivity to SingleFragmentActivity
+ * Created by jSonKang on 1/28/18.
  */
-public class CrimeActivity extends SingleFragmentActivity
+
+public abstract class SingleFragmentActivity extends AppCompatActivity
 {
-    @Override
-    protected android.support.v4.app.Fragment createFragment()
-    {
-        return new Fragment();
-    }
+    protected abstract android.support.v4.app.Fragment createFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
-
         InitializeFragmentManager();
     }
 
@@ -34,7 +29,7 @@ public class CrimeActivity extends SingleFragmentActivity
         if(crimeFragment == null)
         {
             //CrimeFragment EXTENDS Fragment
-            crimeFragment = new CrimeFragment();
+            crimeFragment = createFragment();
             //Creates and commits the Fragment Transactions
             //Create a new fragment transaction, include one add operation in it, commit it
             FM.beginTransaction()

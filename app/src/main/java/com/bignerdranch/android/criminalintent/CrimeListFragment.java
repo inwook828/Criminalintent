@@ -109,10 +109,12 @@ public class CrimeListFragment extends android.support.v4.app.Fragment
         public void bind(Crime crime)
         {
             m_Crime = crime;
+            SimpleDateFormat spf = new SimpleDateFormat("EEEE");
+            String strCurrentDay = spf.format(m_Crime.getDate());
             mCrimeSolvedImageView.setVisibility(m_Crime.isSolved() ? View.VISIBLE : View.GONE);
 
             mTitleTextView.setText(m_Crime.getTitle());
-            mDateTextView.setText(DateFormat.getDateInstance().format(m_Crime.getDate()));
+            mDateTextView.setText(strCurrentDay + ", " + DateFormat.getDateInstance().format(m_Crime.getDate()));
         }
     }
 
